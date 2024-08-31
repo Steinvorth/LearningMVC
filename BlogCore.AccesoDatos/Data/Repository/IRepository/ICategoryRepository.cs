@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace BlogCore.AccesoDatos.Data.Repository.IRepository
 {
-    public interface ICategoryRepository: IRepository<Category>
+    public interface ICategoryRepository : IRepository<Category>
     {
         void Update(Category category);
+
+        //dropdown
+        IEnumerable<SelectListItem> GetCategoryList();
     }
 }
