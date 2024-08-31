@@ -23,32 +23,67 @@ namespace BlogCore.AccesoDatos.Data.Repository
 
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            dbSet.Add(entity);
         }
 
         public T Get(int id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
         }
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet; // create a queryable object of type T
+
+            if (filter != null)
+            {
+                query = query.Where(filter); // apply the filter to the query
+            }
+
+            if(includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty); // include the properties in the query
+                }
+            }
+
+            if(orderBy != null)
+            {
+                return orderBy(query).ToList(); // return the ordered query
+            }
+
+            return query.ToList(); // return the query
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet; // create a queryable object of type T
+
+            if (filter != null)
+            {
+                query = query.Where(filter); // apply the filter to the query
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty); // include the properties in the query
+                }
+            }
+
+            return query.FirstOrDefault(); // return the query
         }
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            T entityToRemove = dbSet.Find(id);
         }
 
         public void Remove(T entity)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(entity);
         }
     }
 }
