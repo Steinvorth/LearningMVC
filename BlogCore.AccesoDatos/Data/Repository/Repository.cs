@@ -1,4 +1,5 @@
 ﻿using BlogCore.AccesoDatos.Data.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,16 @@ namespace BlogCore.AccesoDatos.Data.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
+
+        protected readonly DbContext Context;
+        internal DbSet<T> dbSet;
+
+        public Repository(DbContext context)
+        {
+            Context = context;
+            this.dbSet = context.Set<T>();
+        }
+
         public void Add(T entity)
         {
             throw new NotImplementedException();
