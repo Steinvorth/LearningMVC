@@ -18,13 +18,16 @@ namespace BlogCore.AccesoDatos.Data.Repository
             CategoryRepo = new CategoryRepository(_db);
         }
 
+        //Here go the repositories
         public ICategoryRepository CategoryRepo { get; private set; }
 
+        //method to dispose
         public void Dispose()
         {
             _db.Dispose();
         }
 
+        //method to save changes
         public void save()
         {
             _db.SaveChanges();
