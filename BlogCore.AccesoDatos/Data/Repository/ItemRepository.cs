@@ -10,20 +10,22 @@ using System.Web.Mvc;
 
 namespace BlogCore.AccesoDatos.Data.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class ItemRepository : Repository<Category>, I_ItemRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public CategoryRepository(ApplicationDbContext db) : base(db)
+        public ItemRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(Category category)
+        public void Update(Item item)
         {
-            var objFromDb = _db.Category.FirstOrDefault(s => s.Id == category.Id);
-            objFromDb.Name = category.Name;
-            objFromDb.Order = category.Order;
+            var dbObj = _db.Item.FirstOrDefault(s => s.Id == item.Id);
+            dbObj.Name = item.Name;
+            dbObj.Description = item.Description;
+            dbObj.CategoryId = item.CategoryId;
+            dbObj.ImageURL = item.ImageURL;
 
             //_db.SaveChanges();
         }

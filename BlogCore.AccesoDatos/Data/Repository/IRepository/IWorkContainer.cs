@@ -10,6 +10,7 @@ namespace BlogCore.AccesoDatos.Data.Repository.IRepository
     {
         //Here go the repositories
         ICategoryRepository CategoryRepo { get; }
+        I_ItemRepository ItemRepo { get; }
         void save(); //method to save changes
     }
 }

@@ -16,10 +16,12 @@ namespace BlogCore.AccesoDatos.Data.Repository
         {
             _db = db;
             CategoryRepo = new CategoryRepository(_db);
+            ItemRepo = new ItemRepository(_db);
         }
 
         //Here go the repositories
         public ICategoryRepository CategoryRepo { get; private set; }
+        public I_ItemRepository ItemRepo { get; private set; }
 
         //method to dispose
         public void Dispose()
