@@ -19,11 +19,6 @@ namespace BlogCore.AccesoDatos.Data.Repository
             _db = db;
         }
 
-        public IEnumerable<SelectListItem> GetCategoryList()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(Category category)
         {
             var objFromDb = _db.Category.FirstOrDefault(s => s.Id == category.Id);

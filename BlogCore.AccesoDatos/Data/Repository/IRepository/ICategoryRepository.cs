@@ -11,8 +11,5 @@ namespace BlogCore.AccesoDatos.Data.Repository.IRepository
     public interface ICategoryRepository : IRepository<Category>
     {
         void Update(Category category);
-
-        //dropdown
-        IEnumerable<SelectListItem> GetCategoryList();
     }
 }

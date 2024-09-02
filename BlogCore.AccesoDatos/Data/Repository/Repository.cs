@@ -52,8 +52,11 @@ namespace BlogCore.AccesoDatos.Data.Repository
             {
                 return orderBy(query).ToList(); // return the ordered query
             }
-
-            return query.ToList(); // return the query
+            else
+            {
+                return query.ToList(); // return the query
+            }
+            
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)

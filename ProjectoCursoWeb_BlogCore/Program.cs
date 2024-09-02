@@ -1,3 +1,5 @@
+using BlogCore.AccesoDatos.Data.Repository;
+using BlogCore.AccesoDatos.Data.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProjectoCursoWeb_BlogCore.Data;
@@ -13,6 +15,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+//Add Work Container to the IoC container
+builder.Services.AddScoped<IWorkContainer, WorkContainer>();
 
 var app = builder.Build();
 
