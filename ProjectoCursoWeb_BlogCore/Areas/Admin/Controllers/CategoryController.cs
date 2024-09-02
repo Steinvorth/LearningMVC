@@ -56,6 +56,19 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category category) //has to be named the same as the Action in the Index.cshtml
+        {
+            if (ModelState.IsValid)
+            {
+                _workContainer.CategoryRepo.Update(category);
+                _workContainer.save();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
         #region API CALLS
 
         [HttpGet]
@@ -63,6 +76,23 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
         {
             return Json(new {data = _workContainer.CategoryRepo.GetAll()});
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var dbObj = _workContainer.CategoryRepo.Get(id);
+
+            // if there is not a category with that id
+            if (dbObj == null)
+            {
+                return Json(new { success = false, message = "Error while deleting category" });
+            }
+
+            _workContainer.CategoryRepo.Remove(dbObj);
+            _workContainer.save();
+            return Json(new { success = true, message = "Category deleted successfully" });
+        }
+
 
         #endregion
 

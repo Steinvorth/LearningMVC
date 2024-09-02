@@ -5,8 +5,6 @@ $(document).ready(function () {
 });
 
 function loadDataTable() {
-    console.log("Starting DataTable")
-
     dataTable = $('#tblCategory').DataTable({
         "ajax": {
             "url": "/admin/category/GetAll",
@@ -56,5 +54,40 @@ function loadDataTable() {
                 "previous": "Previous"
             }
         }, "width": "100%"
+    });
+}
+
+function Delete(url) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        );
+                        dataTable.ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            'Something went wrong.',
+                            'error'
+                        );
+                    }
+                }
+            });
+        }
     });
 }
