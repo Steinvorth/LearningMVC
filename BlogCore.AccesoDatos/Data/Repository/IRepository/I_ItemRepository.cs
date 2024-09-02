@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace BlogCore.AccesoDatos.Data.Repository.IRepository
 {
-    public interface I_ItemRepository : IRepository<Category>
+    public interface I_ItemRepository : IRepository<Item>
     {
         void Update(Item item);
     }

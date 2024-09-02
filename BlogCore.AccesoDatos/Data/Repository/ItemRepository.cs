@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace BlogCore.AccesoDatos.Data.Repository
 {
-    public class ItemRepository : Repository<Category>, I_ItemRepository
+    public class ItemRepository : Repository<Item>, I_ItemRepository
     {
         private readonly ApplicationDbContext _db;
 

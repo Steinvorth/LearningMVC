@@ -1,0 +1,73 @@
+﻿@model BlogCore.Models.ViewModels.ItemViewModel
+
+@{
+    ViewData["Title"] = "Create Item";
+}
+
+<br />
+<br />
+
+<h3 class="text-center">Create a new Item</h3>
+<form method="POST" asp-action="Create">
+    <div class="row px-2 offset-1 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="col-10 offset-1 mt-4">
+
+            @* name *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Item.Name" class="control-label"></label>
+                </div>
+
+                <div class="col-8">
+                    <input asp-for="Item.Name" class="form-control" placeholder="Enter a Name" />
+                    <span asp-validation-for="Item.Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            @* Description *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Item.Description" class="control-label"></label>
+                </div>
+
+                <div class="col-8">
+                    <input asp-for="Item.Description" class="form-control" placeholder="Enter the description" />
+                    <span asp-validation-for="Item.Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            @* DropDown Category *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="control-label">Category</label>
+                </div>
+
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Item.CategoryId, Model.CategoryList.Select(c => new SelectListItem { Text = c.Text, Value = c.Value }), "-Please Select a Category-", new {@class="form-control"})
+                    <span asp-validation-for="Item.CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group-row">
+                <div class="col-8">
+                    <partial name="_ViewCreateReturn" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
