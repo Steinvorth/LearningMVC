@@ -73,18 +73,10 @@ function Delete(url) {
                 url: url,
                 success: function (data) {
                     if (data.success) {
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        );
+                        toastr.success(data.message)
                         dataTable.ajax.reload();
                     } else {
-                        Swal.fire(
-                            'Error!',
-                            'Something went wrong.',
-                            'error'
-                        );
+                        toastr.error(data.message)
                     }
                 }
             });
