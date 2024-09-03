@@ -109,13 +109,37 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
             return View(itemVM);
         }
 
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var item = _workContainer.ItemRepo.Get(id.GetValueOrDefault());
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            ItemViewModel itemVM = new ItemViewModel()
+            {
+                Item = item,
+                CategoryList = _workContainer.CategoryRepo.GetCategoryList()
+            };
+
+            return View(itemVM);
+        }
+
+
         #region
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            //include properties allows to change the query to include the properties of the category or other tables.
-            return Json(new { data = _workContainer.ItemRepo.GetAll(includeProperties: "Category") }); 
+            var allObj = _workContainer.ItemRepo.GetAll(includeProperties: "Category");
+            return Json(new { data = allObj });
         }
 
         #endregion

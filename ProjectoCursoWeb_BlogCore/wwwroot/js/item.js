@@ -16,10 +16,10 @@ function loadDataTable() {
             { "data": "name", "width": "20%" },
             { "data": "creationDate", "width": "15%" },
             { "data": "imageURL", "width": "15%" },
-            { "data": "category.name", "width": "15%" },           
-            
+            { "data": "category.name", "width": "15%" },
+
             {
-                "data": "Id",
+                "data": "id",  
                 "render": function (data) {
                     return `
                         <div class="text-center">
@@ -33,7 +33,8 @@ function loadDataTable() {
                         </div>
                     `;
                 }, "width": "25%"
-            },
+            }
+
         ],
         // this is for the language of the table, it will show the text in the language that we want and the buttons
         "language":
