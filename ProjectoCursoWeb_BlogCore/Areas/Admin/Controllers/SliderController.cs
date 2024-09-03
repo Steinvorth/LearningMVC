@@ -154,9 +154,9 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var itemDbObj = _workContainer.SliderRepo.Get(id);
+            var sliderDbObj = _workContainer.SliderRepo.Get(id);
             string route = _hostingEnvironment.WebRootPath;
-            var routeImage = Path.Combine(route, itemDbObj.ImageURL.TrimStart('\\'));
+            var routeImage = Path.Combine(route, sliderDbObj.ImageURL.TrimStart('\\'));
 
             if (System.IO.File.Exists(routeImage))
             {
@@ -164,14 +164,14 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
             }
 
             // if there is not a category with that id
-            if (itemDbObj == null)
+            if (sliderDbObj == null)
             {
-                return Json(new { success = false, message = "Error while deleting item" });
+                return Json(new { success = false, message = "Error while deleting slider" });
             }
 
-            _workContainer.SliderRepo.Remove(itemDbObj);
+            _workContainer.SliderRepo.Remove(sliderDbObj);
             _workContainer.save();
-            return Json(new { success = true, message = "Item deleted successfully" });
+            return Json(new { success = true, message = "Slider deleted successfully" });
         }
 
         #endregion
