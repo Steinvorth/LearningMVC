@@ -90,17 +90,6 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
                     ModelState.AddModelError("Image", "Remember to select an Image.");
                 }
             }
-            else
-            {
-                Console.WriteLine("Debug: ModelState is not valid.");
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
-                    }
-                }
-            }
 
             // Debug: Re-populating the CategoryList for the view
             itemVM.CategoryList = _workContainer.CategoryRepo.GetCategoryList();
@@ -132,6 +121,78 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
             return View(itemVM);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(ItemViewModel itemVM)
+        {
+            // Debug: Inspecting the incoming CategoryId
+            Console.WriteLine($"Debug: Incoming CategoryId: {itemVM.Item.CategoryId}");
+
+            // Remove potential issues from ModelState
+            ModelState.Remove("Item.ImageURL");
+            ModelState.Remove("Item.CreationDate");
+            ModelState.Remove("CategoryList");
+            ModelState.Remove("Item.Category"); // Remove Category from ModelState validation
+
+            // Debug: Check ModelState validation before proceeding
+            if (ModelState.IsValid)
+            {
+                string route = _hostingEnvironment.WebRootPath;
+                var files_ = HttpContext.Request.Form.Files;
+
+                var itemFromDb = _workContainer.ItemRepo.Get(itemVM.Item.Id);
+
+                if (files_.Count() > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(route, @"images\items");
+                    var extension = Path.GetExtension(files_[0].FileName);
+                    var newExtension = Path.GetExtension(files_[0].FileName);
+
+                    var imagePath = Path.Combine(route, itemFromDb.ImageURL.TrimStart('\\'));
+
+                    if(System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+
+                    //upload the new file
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        files_[0].CopyTo(fileStreams);
+                    }
+
+                    // Debug: Set ImageURL and CreationDate
+                    itemVM.Item.ImageURL = @"\images\items\" + fileName + extension;
+                    itemVM.Item.CreationDate = DateTime.Now.ToString();
+
+                    Console.WriteLine($"Debug: ImageURL set to: {itemVM.Item.ImageURL}");
+                    Console.WriteLine($"Debug: CreationDate set to: {itemVM.Item.CreationDate}");
+
+                    // Save the item to the database
+                    _workContainer.ItemRepo.Update(itemVM.Item);
+                    _workContainer.save();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    //item will just stay the same if there is an error.
+                    itemVM.Item.ImageURL = itemFromDb.ImageURL;
+                }
+
+                _workContainer.ItemRepo.Update(itemVM.Item);
+                _workContainer.save();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Debug: Re-populating the CategoryList for the view
+            itemVM.CategoryList = _workContainer.CategoryRepo.GetCategoryList();
+            Console.WriteLine("Debug: Re-populated CategoryList.");
+
+            return View(itemVM);
+        }
 
         #region
 
@@ -140,6 +201,29 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
         {
             var allObj = _workContainer.ItemRepo.GetAll(includeProperties: "Category");
             return Json(new { data = allObj });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var itemDbObj = _workContainer.ItemRepo.Get(id);
+            string route = _hostingEnvironment.WebRootPath;
+            var routeImage = Path.Combine(route, itemDbObj.ImageURL.TrimStart('\\'));
+
+            if (System.IO.File.Exists(routeImage))
+            {
+                System.IO.File.Delete(routeImage);
+            }
+
+            // if there is not a category with that id
+            if (itemDbObj == null)
+            {
+                return Json(new { success = false, message = "Error while deleting item" });
+            }
+
+            _workContainer.ItemRepo.Remove(itemDbObj);
+            _workContainer.save();
+            return Json(new { success = true, message = "Item deleted successfully" });
         }
 
         #endregion

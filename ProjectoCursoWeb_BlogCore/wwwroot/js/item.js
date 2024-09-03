@@ -14,9 +14,9 @@ function loadDataTable() {
         "columns": [
             { "data": "id", "width": "5%" },
             { "data": "name", "width": "20%" },
+            { "data": "category.name", "width": "15%" },         
+            { "data": "imageURL", "render": function (image) { return `<img src="../${image}" width="120px">`}, "width": "15%" },
             { "data": "creationDate", "width": "15%" },
-            { "data": "imageURL", "width": "15%" },
-            { "data": "category.name", "width": "15%" },
 
             {
                 "data": "id",  
