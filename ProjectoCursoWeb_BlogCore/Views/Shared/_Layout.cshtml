@@ -51,6 +51,14 @@
                 <partial name="_LoginPartial"/>
             </div>
         </nav>
+
+        @* slider partial view *@
+        @if(ViewBag.IsHome == true)
+        {
+            <partial name="_Slider" />
+        }
+        
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

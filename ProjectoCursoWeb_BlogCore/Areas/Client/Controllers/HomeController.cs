@@ -1,3 +1,5 @@
+using BlogCore.AccesoDatos.Data.Repository.IRepository;
+using BlogCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using ProjectoCursoWeb_BlogCore.Models;
 using System.Diagnostics;
@@ -8,16 +10,32 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Client.Controllers
     [Area("Client")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IWorkContainer _workContainer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IWorkContainer workContainer)
         {
-            _logger = logger;
+            _workContainer = workContainer;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            HomeViewModel homeViewModel = new HomeViewModel()
+            {
+                Sliders = _workContainer.SliderRepo.GetAll(),
+                Items = _workContainer.ItemRepo.GetAll()
+            };
+
+            ViewBag.IsHome = true;
+            return View(homeViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var dbItem = _workContainer.ItemRepo.Get(id);
+
+            return View(dbItem);
         }
 
         public IActionResult Privacy()

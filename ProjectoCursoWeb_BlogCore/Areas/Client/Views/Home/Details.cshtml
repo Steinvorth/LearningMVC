@@ -1,0 +1,27 @@
+﻿@model BlogCore.Models.Item
+
+@{
+    ViewData["Title"] = "Item Details";
+
+    DateTime creationDate = DateTime.Parse(Model.CreationDate);
+    string formattedDate = creationDate.ToString("dd/MM/yyyy");
+}
+
+<br />
+<div class="container">
+    <div class="card">
+        <div class="card-header text-light d-flex justify-content-between align-items-center">
+            <h2 class="text-primary mb-0">@Model.Name</h2>
+            <h5 class="text-muted mb-0">@formattedDate</h5>
+        </div>
+
+        <div class="card-body text-center">
+            <img src="@Model.ImageURL" class="img-thumbnail mx-auto d-block mb-3" />
+            <p class="text-secondary">@Html.Raw(Model.Description)</p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <a asp-action="Index" class="btn btn-success btn-sm">Back</a>
+        </div>
+    </div>
+</div>
