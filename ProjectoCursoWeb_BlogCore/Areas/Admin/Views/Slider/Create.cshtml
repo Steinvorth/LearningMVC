@@ -1,0 +1,73 @@
+﻿@model BlogCore.Models.Slider
+
+@{
+    ViewData["Title"] = "Create Slider";
+}
+
+<br />
+<br />
+
+<h3 class="text-center">Create a new Slider</h3>
+<form method="POST" asp-action="Create" enctype="multipart/form-data">
+    <div class="row px-2 offset-1 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="col-10 offset-1 mt-4">
+
+            @* name *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name" class="control-label"></label>
+                </div>
+
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" placeholder="Enter a Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            @* State CheckBox *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="State" class="control-label"></label>
+                </div>
+
+                <div class="col-8">
+                    <input type="checkbox" asp-for="State" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />           
+
+            @* Image *@
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="ImageURL"></label>
+                </div>
+
+                <div class="col-8">
+                    <input type="file" name="files_" id="file-upload" class="form-control" />
+                    <span asp-validation-for="ImageURL" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group-row">
+                <div class="col-8">
+                    <partial name="_ViewCreateReturn" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
