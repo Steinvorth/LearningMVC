@@ -11,5 +11,8 @@ namespace BlogCore.AccesoDatos.Data.Repository.IRepository
     public interface I_ItemRepository : IRepository<Item>
     {
         void Update(Item item);
+
+        //Search
+        IQueryable<Item> AsQueryable();
     }
 }

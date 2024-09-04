@@ -1,4 +1,5 @@
 using BlogCore.AccesoDatos.Data.Repository.IRepository;
+using BlogCore.Models;
 using BlogCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using ProjectoCursoWeb_BlogCore.Models;
@@ -28,6 +29,24 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Client.Controllers
 
             ViewBag.IsHome = true;
             return View(homeViewModel);
+        }
+
+        //Search
+        [HttpGet]
+        public IActionResult SearchResult(string searchString, int page = 1, int pageSize = 6)
+        {
+            var items = _workContainer.ItemRepo.AsQueryable();
+
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                items = items.Where(x => x.Name.Contains(searchString) || x.Description.Contains(searchString));
+            }
+
+            var itemsPaged = items.Skip((page -1) * pageSize).Take(pageSize);
+
+            var model = new PaginatedList<Item>(itemsPaged.ToList(), items.Count(), page, pageSize, searchString);
+
+            return View(model);
         }
 
         [HttpGet]
