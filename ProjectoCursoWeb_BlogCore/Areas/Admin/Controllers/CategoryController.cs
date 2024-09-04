@@ -1,9 +1,11 @@
 ﻿using BlogCore.AccesoDatos.Data.Repository.IRepository;
 using BlogCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")] //This is the area, its needed to identify the controller
     public class CategoryController : Controller
     {
@@ -22,6 +24,7 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Admin.Controllers
 
         //Create
         [HttpGet]
+        //[AllowAnonymous] this tag allows all authenticated users to access a specific controller method.
         public IActionResult Create() //has to be named the same as the Action in the Index.cshtml
         {
             return View();
