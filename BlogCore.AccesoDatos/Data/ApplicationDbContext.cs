@@ -1,4 +1,5 @@
 ﻿using BlogCore.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,5 +16,6 @@ namespace ProjectoCursoWeb_BlogCore.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Item> Item { get; set; }
         public DbSet<Slider> Slider { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }
