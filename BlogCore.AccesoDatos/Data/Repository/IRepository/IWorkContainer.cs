@@ -12,6 +12,7 @@ namespace BlogCore.AccesoDatos.Data.Repository.IRepository
         ICategoryRepository CategoryRepo { get; }
         I_ItemRepository ItemRepo { get; }
         ISliderRepository SliderRepo { get; }
+        IUserRepository UserRepo { get; }
         void save(); //method to save changes
     }
 }
