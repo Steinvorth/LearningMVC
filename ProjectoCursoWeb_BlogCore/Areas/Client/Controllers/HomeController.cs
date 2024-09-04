@@ -4,6 +4,7 @@ using BlogCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using ProjectoCursoWeb_BlogCore.Models;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace ProjectoCursoWeb_BlogCore.Areas.Client.Controllers
 {
@@ -19,12 +20,32 @@ namespace ProjectoCursoWeb_BlogCore.Areas.Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        //first version without pagination
+
+        //public IActionResult Index()
+        //{
+        //    HomeViewModel homeViewModel = new HomeViewModel()
+        //    {
+        //        Sliders = _workContainer.SliderRepo.GetAll(),
+        //        Items = _workContainer.ItemRepo.GetAll()
+        //    };
+
+        //    ViewBag.IsHome = true;
+        //    return View(homeViewModel);
+        //}
+
+
+        public IActionResult Index(int page=1, int pageSize = 10)
         {
+            var items = _workContainer.ItemRepo.AsQueryable();
+            var itemsPaged = items.Skip((page - 1) * pageSize).Take(pageSize);
+
             HomeViewModel homeViewModel = new HomeViewModel()
             {
                 Sliders = _workContainer.SliderRepo.GetAll(),
-                Items = _workContainer.ItemRepo.GetAll()
+                Items = itemsPaged.ToList(),
+                PageIndex = page,
+                TotalPages = (int)Math.Ceiling(items.Count() / (double)pageSize)
             };
 
             ViewBag.IsHome = true;
